@@ -9,6 +9,7 @@ namespace SecondWebApp
         public void Configuration(IAppBuilder app)
         {
 			//Added comment
+			//second comment
             ConfigureAuth(app);
         }
     }
