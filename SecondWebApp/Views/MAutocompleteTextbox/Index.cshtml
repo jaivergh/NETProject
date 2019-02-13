@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.theme.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui.js"></script>
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        <input type="text" class="form-control" id="textAutoComplete" />
+    </div>
+</div>
+
+<script>
+
+    //var autoSuggestionArray = ["Camilo", "Juan", "Pedro", "Jose"];
+
+    $("#textAutoComplete").autocomplete({
+        source: function (request, response) {
+
+            //var text = $("#textAutoComplete").val();
+
+            $.ajax({
+                type: "GET",
+                url: "/MAutocompleteTextbox/GetSuggestions",
+                data: { text: request.term },
+                success: function (data) {
+                    response($.map(data, function (item) {
+                        return {label:item, value:item}
+                    }))
+
+                }
+            })
+        }
+    });
+</script>

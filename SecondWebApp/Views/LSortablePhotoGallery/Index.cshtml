@@ -1,0 +1,65 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.theme.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui.js"></script>
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        <ul class="list-group" id="sortableGallery" style="cursor:move">
+            <li class="list-group-item col-md-4">
+                <div>
+                    <img class="img-responsive" src="~/Content/Images/frog-1371919.jpg" />
+                </div>
+            </li>
+
+            <li class="list-group-item col-md-4">
+                <div>
+                    <img class="img-responsive" src="~/Content/Images/orange-splash-1326817.jpg" />
+                </div>
+            </li>
+
+            <li class="list-group-item col-md-4">
+                <div>
+                    <img class="img-responsive" src="~/Content/Images/red-currant-1637228.jpg" />
+                </div>
+            </li>
+
+            <li class="list-group-item col-md-4">
+                <div>
+                    <img class="img-responsive" src="~/Content/Images/horse-1393073.jpg" />
+                </div>
+            </li>
+
+            <li class="list-group-item col-md-4">
+                <div>
+                    <img class="img-responsive" src="~/Content/Images/mini-house-1637048.jpg" />
+                </div>
+            </li>
+
+            <li class="list-group-item col-md-4">
+                <div>
+                    <img class="img-responsive" src="~/Content/Images/mill-house-1637156.jpg" />
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    $("#sortableGallery").sortable({
+        update: function () {
+            alert("Deje de mover las cosas.");
+        }
+    });
+</script>

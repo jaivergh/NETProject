@@ -1,0 +1,21 @@
+﻿<table class="table table-bordered">
+    @if (ViewBag.EmployeeList != null)
+    {
+        foreach (var employee in ViewBag.EmployeeList)
+        {
+            <tr>
+                <td><b>Name</b></td>
+                <td><b>@employee.Name</b></td>
+            </tr>
+            <tr>
+                <td><b>Departamento</b></td>
+                <td><b>@employee.DepartmentName</b></td>
+            </tr>
+
+            <tr>
+                <td><b>Address</b></td>
+                <td><b>@employee.Address</b></td>
+            </tr>
+        }
+    }
+</table>

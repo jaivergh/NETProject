@@ -1,0 +1,45 @@
+﻿@model WebMVC.Models.EmployeeViewModel
+@{
+    /**/
+
+    ViewBag.Title = "HtmlHelper";
+    Layout = null;
+}
+
+<h2>HtmlHelper</h2>
+<style>
+    .error {
+        color: red;
+    }
+</style>
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div class="container" style="width:40%;margin-top:2%">
+
+    @using (Html.BeginForm("HtmlHelper", "Html", FormMethod.Post))
+    {
+        @Html.DropDownListFor(model => model.DepartmentId, ViewBag.DepartmentList as SelectList, "--Seleccione--", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.DepartmentId, "", new { @class = "error" })
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeHolder = "Nombre" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "error" })
+        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeHolder = "Dirección" })
+        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "error" })
+
+        @Html.TextBoxFor(model => model.SiteName, new { @class = "form-control", @placeHolder = "Sitio Web" })
+        @Html.ValidationMessageFor(m => m.SiteName, "", new { @class = "error" })
+
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(m => m.Remember)
+                Dale Click
+            </label>
+        </div>
+
+        <input class="btn btn-primary" type="submit" name="SubmitBtn" />
+    }
+</div>

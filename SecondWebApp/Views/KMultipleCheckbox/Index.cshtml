@@ -1,0 +1,73 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        <div class="col-md-5">
+            <ul class="list-group" id="ItemList">
+                <li class="list-group-item-heading list-group-item active">
+                    <h4 class="list-group-item-text">Productos disponibles.</h4>
+                </li>
+                @if (ViewBag.ShopList != null)
+                {
+                    foreach (var item in ViewBag.ShopList)
+                    {
+
+                        <li class="list-group-item">
+                            <div class="checkbox" style="padding-left:20px">
+                                <input type="checkbox" id="CheckBox_@item.ItemId" checked="@item.IsAvailable"/>
+                                <label for="CheckBox_@item.ItemId">@item.ItemName</label>
+                            </div>
+                        </li>
+                    }
+                    <li class="list-group-item">
+                        <a class="btn btn-success btn-block" onclick="SaveList()">Actualizar Elementos</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    var SaveList = function () {
+        debugger;
+        var arrayItem = [];
+        var commaSeparatedIds = "";
+        $("#ItemList li input[type=checkbox]").each(function (index, val) {
+            debugger;
+            var checkBoxId = $(val).attr("Id");
+            var arr = checkBoxId.split("_");
+            var currentId = arr[1];
+            var isChecked = $("#" + checkBoxId).is(":checked", true);
+
+            if (isChecked) {
+                arrayItem.push(currentId);
+            }
+
+        })
+
+        if (arrayItem.length != 0) {
+            debugger
+            commaSeparatedIds = arrayItem.toString();
+            $.ajax({
+                type: "POST",
+                url: "/KMultipleCheckbox/SaveList",
+                data: { "ItemList": commaSeparatedIds },
+                success: function (response) {
+
+                }
+            })
+        }
+
+    }
+</script>

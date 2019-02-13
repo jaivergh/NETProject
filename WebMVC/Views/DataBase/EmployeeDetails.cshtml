@@ -1,0 +1,30 @@
+﻿@model WebMVC.Models.EmployeeViewModel
+@{
+    ViewBag.Title = "EmployeeDetails";
+}
+
+<h2>EmployeeDetails</h2>
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<div class="container" style="width:60%;margin-top:2%">
+    <table class="table table-striped">
+        <tr>
+            <th>Identificacion</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>DepartamentoID</th>
+            <th>Departamento</th>
+        </tr>
+
+        <tbody>
+            <tr>
+                <td>@Model.DepartmentId</td>
+                <td>@Model.Name</td>
+                <td>@Model.Address</td>
+                <td>@Model.DepartmentId</td>
+                <td>@Model.DepartmentName</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        <table class="table table-striped">
+            <tr>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Departamento</th>
+            </tr>
+
+            <tbody>
+
+                @if (ViewBag.EmployeeVMList != null)
+                {
+                    foreach (var item in ViewBag.EmployeeVMList)
+                    {
+                <tr>
+                    <td>@item.Name</td>
+
+                    <td>@item.Address</td>
+
+                    <td>@item.DepartmentName</td>
+                </tr>
+
+                    }
+                }
+
+            </tbody>
+
+
+        </table>
+
+
+    </div>
+</div>

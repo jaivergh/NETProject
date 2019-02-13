@@ -1,0 +1,35 @@
+﻿
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+
+
+}
+
+<h2>Index</h2>
+
+
+@ViewBag.Name
+
+<br />
+<table class="table table-striped">
+    <tr>
+        <th>Nombre</th>
+    </tr>
+    <tbody>
+        @if (ViewBag != null)
+        {
+            foreach (var nom in ViewBag.List)
+            {
+                <tr>
+                    <td>
+                        @nom
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

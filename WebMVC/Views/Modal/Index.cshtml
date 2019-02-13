@@ -1,0 +1,100 @@
+﻿@model WebMVC.Models.EmployeeViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+
+
+
+<div class="container" style="width:40%;margin-top:2%">
+
+    <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#employeeModal">Click aquí</a>
+
+    <div class="modal fade" id="employeeModal">
+
+        <div class="modal-dialog">
+
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Información del empleado</h3>
+                </div>
+                <div class="modal-body">
+
+                    <form id="myForm">
+                        @Html.DropDownListFor(m => m.DepartmentId, ViewBag.DepartmentList as SelectList, "--Seleccione--", new { @class = "form-control" })
+
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeHolder = "Nombre" })
+
+                        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeHolder = "Dirección" })
+
+
+                        @Html.TextBoxFor(m => m.SiteName, new { @class = "form-control", @placeHolder = "Sitio Web" })
+
+
+                        <div class="checkbox">
+                            <label>
+                                @Html.CheckBoxFor(m => m.Remember)
+                                Dale Click
+                            </label>
+                        </div>
+
+                        <div style="text-align:center; display:none" id="loadingID">
+                            <img src="~/Images/loading.gif" width="150" />
+                        </div>
+
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancelar</a>
+                    <input class="btn btn-primary" type="button" id="btnSubmit" value="Enviar" />
+                    <a href="#" onclick="otroGuardar()">Guardar tmb</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script>
+
+    $("#btnSubmit").click(function () {
+
+        $(document).ready(function () {
+            $("#loadingID").show();
+            debugger
+
+            var info = $("#myForm").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "/Modal/index",
+                data: info,
+                success: function (response) {
+                    $("#employeeModal").modal("hide");
+                    $("#loadingID").hide();
+                    alert("La información ha sido almacenada correctamente");
+                }
+
+            })
+
+        })
+    })
+
+    var otroGuardar = function () {
+
+    }
+</script>

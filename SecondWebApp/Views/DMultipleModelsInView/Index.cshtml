@@ -1,0 +1,39 @@
+﻿@model SecondWebApp.Models.ModelC
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+        @*@Html.Partial("SideMenu")*@
+
+        @{ 
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        @if(Model != null)
+        {
+
+            <h3 class="col-md-12">@Model.Age</h3>
+            <div class="col-md-6">
+                <ul class="list-group">
+                    @foreach(var modelA in Model.modelAs)
+                    {
+                        <li class="list-group-item">@modelA.Name</li>
+                    }
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-group">
+                    @foreach(var modelB in Model.modelBs)
+                    {
+                        <li class="list-group-item">@modelB.Country</li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+</div>
+

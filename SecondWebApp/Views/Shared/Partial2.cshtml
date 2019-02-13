@@ -1,0 +1,56 @@
+﻿@model SecondWebApp.Models.EmployeeViewModel
+
+<div>
+    <form id="myForm">
+        @Html.HiddenFor(m => m.EmployeeID)
+
+        @Html.DropDownListFor(m => m.DepartmentId, ViewBag.DepartmentList as SelectList, "--select--", new { @class = "form-control" })
+
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Name" })
+
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeholder = "Dirección" })
+
+        <a href="#" id="btnSubmit" class="btn btn-danger btn-block">
+            @if (Model.EmployeeID > 0)
+            {<span>Actualizar</span>}
+            else
+            {<span>Guardar</span>}
+        </a>
+
+
+    </form>
+
+
+
+    <div style="text-align:center; display:none" id="loadingDiv">
+
+
+        <img src="~/Images/loading.gif" width="150" />
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#btnSubmit").click(function () {
+            debugger
+            var data = $("#myForm").serialize();
+            $.ajax({
+                type: "POST",
+                url: "/OJQueryDataTables/Index",
+                data: data,
+                success: function () {
+                    $("#loadingDiv").hide();
+                    $("#editModal").modal("hide");
+                    window.location.href = "/OJQueryDataTables/Index";
+
+                }
+            })
+        })
+
+    })
+</script>

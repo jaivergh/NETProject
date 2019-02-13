@@ -1,0 +1,106 @@
+﻿@model SecondWebApp.Models.LoginViewModelo
+@{
+    ViewBag.Title = "Index";
+}
+
+<style>
+    .error {
+        color: red;
+    }
+</style>
+
+<div class="panel panel-body">
+
+
+
+    <div class="panel panel-body">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+
+                @{
+                    Html.RenderAction("SideMenu", "EDynamicMenu");
+                }
+            </div>
+        </div>
+        <div class="col-md-9">
+
+            <form id="logInForm" class="form-group">
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <h4>Inicia sesión aquí</h4>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", @placeholder = "Correo eléctronico" })
+                        @Html.ValidationMessageFor(x=>x.EmailId, "", new { @class = "error" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Contraseña" })
+                        @Html.ValidationMessageFor(x=>x.Password, "", new { @class= "error" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <a href="#" class="btn btn-primary" onclick="LogInUser()">Enviar</a>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var LogInUser = function () {
+        debugger
+        var data = $("#logInForm").serialize();
+
+        //var EmailId = $("#EmailId").val();
+        //var Password = $("#Password").val();
+
+        //if (EmailId == "" || EmailId == undefined) {
+        //    alert("Ingrese un email");
+        //    return false;
+        //}
+
+        //if (Password == "" || Password == undefined) {
+        //    alert("Ingrese un password");
+        //    return false;
+        //}
+
+        if (! $("#logInForm").valid()) {
+            return false;
+        }
+
+        debugger;
+        $.ajax({
+            type: "post",
+            url: "/CLoginJQuery/LogInUser",
+            data: data,
+            success: function (response) {
+                debugger
+                if (response == "fail") {
+                    window.location.href = "/CLoginJQuery/Index";
+                }
+                else if (response == "GeneralUser") {
+                    window.location.href = "/Home/Index";
+                }
+                else if (response == "SuperAdmin") {
+                    window.location.href = "/CLoginJQuery/Admin";
+                }
+                else if (response == "Admin") {
+                    window.location.href = "/CLoginJQuery/Admin";
+                }
+            }
+
+        })
+
+    }
+</script>

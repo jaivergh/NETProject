@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+@*<link href="~/Content/bootstrap.css" rel="stylesheet" />*@
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.theme.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui.js"></script>
+
+
+<script src="~/Scripts/bootstrap.js"></script>
+
+<link href="~/Content/DataTables/css/jquery.dataTables.css" rel="stylesheet" />
+<script src="~/Scripts/DataTables/jquery.dataTables.js"></script>
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        <div class="well">
+            <a href="#" class="btn btn-primary" onclick="AddEditEmployee(0)">Nuevo</a>
+        </div>
+        <div class="well">
+            <div class="col-md-3"><input type="text" id="EName" class="form-control" /></div>
+            <div class="col-md-2"><a href="#" onclick="FilterRecord()" class="btn btn-warning">Filtrar Departamento</a></div>
+            <div class="clearfix"></div>
+        </div>
+        <table class="display" id="MyDataTable">
+            <thead>
+                <tr>
+                    <th>Nombre Empleado</th>
+                    <th>Departamento</th>
+                    <th>Dirección</th>
+                    <th>Identificacion</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+
+        </table>
+
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                        <h3 class="modal-title">Editar Empleado</h3>
+                    </div>
+                    <div class="modal-body" id="myModalBodyDiv1">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<a href="#" class="btn btn-primary" onclick="AddEditEmployee(0)">Nuevo</a>
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        //$("#MyDataTable").DataTable();
+
+
+
+        //GetEmployeesRecord();
+        debugger;
+        BindDataTable();
+    })
+
+    var GetEmployeesRecord = function () {
+
+
+        $.ajax({
+            type: "GET",
+            url: "/OJQueryDataTables/getEmployeeList",
+            success: function (response) {
+                BindDataTable(response);
+            }
+        })
+
+    }
+
+    var oTable;
+
+    var BindDataTable = function (response) {
+
+        //Verifies if already exists the dataTable
+        if ($.fn.DataTable.isDataTable("#MyDataTable")) {
+            debugger;
+            oTable.draw();  //basicly refresh the dataTable
+        }
+        else {
+            debugger;
+            oTable = $("#MyDataTable").DataTable({               
+                "bServerSide": true,
+                "sAjaxSource": "/OJQueryDataTables/getEmployeeList",
+                "fnServerData": function (sSource, aoData, fnCallback) {
+
+                    var EName = $("#EName").val();
+
+                    aoData.push({ "name": "EName", "value": EName })
+
+                    $.ajax({
+                        type: "GET",
+                        data: aoData,
+                        url: sSource,
+                        success: fnCallback
+                    })
+
+                },
+                "aoColumns": [
+                    { "mData": "Name" },
+                    { "mData": "DepartmentName" },
+                    { "mData": "Address" },
+                    {
+                        "mData": "EmployeeID",
+                        "render": function (EmployeeID, type, full, meta) {
+                            return '<a href="#" onClick="AddEditEmployee(' + EmployeeID + ')"><i class="glyphicon glyphicon-pencil"></i></a>'
+                        }
+                    }
+
+                ]
+
+            });
+
+        }
+
+    }
+
+    var AddEditEmployee = function (EmployeeId) {
+        var url = "/OJQueryDataTables/AddEditEmployee?EmployeeId=" + EmployeeId;
+        debugger
+        $("#myModalBodyDiv1").load(url, function () {
+            debugger;
+            $("#myModal").modal("show");
+        })
+    }
+
+
+    var FilterRecord = function () {
+        BindDataTable();
+    }
+
+</script>

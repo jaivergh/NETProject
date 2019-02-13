@@ -1,0 +1,112 @@
+﻿@model WebMVC.Models.EmployeeViewModel
+@{
+    ViewBag.Title = "EmployeeList";
+    Layout = null;
+}
+
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+
+
+
+
+
+<div class="container" style="width:40%;margin-top:2%">
+
+    @*@Html.Partial("_LoginPartial");*@
+    @*@Html.Partial("/Views/Shared/_LoginPartial.cshtml")*@
+    @*@{
+        Html.RenderPartial("_LoginPartial", Model);
+    }*@
+
+    @{ 
+        Html.RenderAction("ShowPartial", Model);
+    }
+
+
+    <h2>EmployeeList</h2>
+
+    <table class="table table-responsive">
+
+        <tr>
+            <th>Nombre</th>
+            <th>Departamento</th>
+            <th>Dirección</th>
+            <th>Borrar</th>
+        </tr>
+        <tbody>
+            @if (ViewBag.EmployeeList != null)
+            {
+                foreach (var employee in ViewBag.EmployeeList)
+                {
+                    <tr id="row_@employee.EmployeeID">
+                        <td>@employee.Name</td>
+                        <td>@employee.DepartmentName</td>
+                        <td>@employee.Address</td>
+                        <td><a class="btn btn-danger" href="#" onclick="SelectEmployee(@employee.EmployeeID)"><i class="glyphicon glyphicon-trash"></i> </a></td>
+                    </tr>
+                }
+            }
+        </tbody>
+
+    </table>
+
+    <input type="hidden" id="hiddenEmployeeId" name="EmployeeId" />
+    <div class="modal fade" id="confirmModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Borrar Empleado</h3>
+                </div>
+
+                <div class="modal-body">
+
+                    <h4>Esta seguro que quiere borrar este empleado?</h4>
+
+                    <div style="text-align:center;display:none" id="loadingDiv">
+                        <img src="~/Images/loading.gif" width="150" />
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancelar</a>
+                    <input type="reset" value="Aceptar" class="btn btn-success" id="btnCorfirm" onclick="DeleteEmployee()" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    var SelectEmployee = function (employeeId) {
+
+        $("#hiddenEmployeeId").val(employeeId);
+        $("#confirmModal").modal("show");
+        debugger;
+    }
+
+    var DeleteEmployee = function () {
+        $("#loadingDiv").show();
+        var employeeId = $("#hiddenEmployeeId").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Modal/DeleteEmployee",
+            data: { EmployeeId: employeeId },
+            success: function (result) {
+                debugger;
+                $("#loadingDiv").hide();
+                $("#confirmModal").modal("hide");
+
+                if (result) {
+                    $("#row_" + employeeId).hide("slow");
+                    $("#row_" + employeeId).remove();
+                }
+            }
+        })
+    }
+</script>

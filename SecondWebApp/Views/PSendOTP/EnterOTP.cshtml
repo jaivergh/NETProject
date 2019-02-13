@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "EnterOTP";
+}
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        <h3>Ingresar OTP</h3>
+        <div class="well">
+            <div class="col-md-3"><input type="text" id="enterOTP" placeholder="Enter OTP" class="form-control"/></div>
+            <div class="col-md-2"><a class="btn btn-primary" href="#" onclick="verifyOTP()">Verificar</a></div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var verifyOTP = function () {
+        var otp = $("#enterOTP").val();
+        $.ajax({
+            url: "/PSendOTP/VerifyOTP/}",
+            data: { otp: otp },
+            type: "Post",
+            success: function (response) {
+                debugger;
+                if (response) {
+                    alert("Verificación éxitosa");
+                    window.location = "/PSendOTP/Index";
+                } else {
+                    alert("Verificación falló");
+                }
+            }
+        })
+    }
+</script>

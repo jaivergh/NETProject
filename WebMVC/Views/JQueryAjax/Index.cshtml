@@ -1,0 +1,75 @@
+﻿@model WebMVC.Models.EmployeeViewModel
+@{
+    ViewBag.Title = "Index";
+    //Layout = null;
+}
+
+<h2>Index</h2>
+
+<style>
+    .error {
+        color: red;
+    }
+</style>
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<div class="container" style="width:40%;margin-top:2%">
+
+    <form id="myForm">
+        @Html.DropDownListFor(m => m.DepartmentId, ViewBag.DepartmentList as SelectList, "--Seleccione--", new { @class = "form-control" })
+
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeHolder = "Nombre" })
+
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", @placeHolder = "Dirección" })
+
+
+        @Html.TextBoxFor(m => m.SiteName, new { @class = "form-control", @placeHolder = "Sitio Web" })
+
+
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(m => m.Remember)
+                Dale Click
+            </label>
+        </div>
+
+        <input class="btn btn-primary" type="button" id="btnSubmit" value="Enviar" />
+    </form>
+</div>
+<div style="text-align:center; display:none" id="loadingID">
+    <img src="~/Images/loading.gif" width="150" />
+</div>
+
+
+<script>
+
+    $("#btnSubmit").click(function () {
+
+        $(document).ready(function () {
+
+            debugger
+            $("#loadingID").show();
+            var data = $("#myForm").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "/JQueryAjax/index",
+                data: data,
+                success: function (response) {
+                    $("#loadingID").hide();
+                    alert("La información ha sido almacenada correctamente");
+                }
+
+            })
+
+        })
+
+    })
+
+</script>

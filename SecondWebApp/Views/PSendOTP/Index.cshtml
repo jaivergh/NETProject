@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        <div class="well">
+            <div class="col-md-3"><input type="text" id="textInput" value="(OTP) One Time Password"/></div>
+            <div class="col-md-2"><a class="btn btn-danger" href="#" onclick="senOTP()">Enviar Mensaje de texto</a></div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var senOTP = function () {
+        $.ajax({
+            url: "/PSendOTP/SendOTP",
+            type: "POST",
+            success: function (data) {
+                if (data == "success") {
+                    alert("Mensage enviado correctamante");
+                    window.location = "/PSendOTP/EnterOTP";
+                } else {
+                    alert("Error al enviar el mensage");
+                }
+            }
+        })
+    }
+</script>

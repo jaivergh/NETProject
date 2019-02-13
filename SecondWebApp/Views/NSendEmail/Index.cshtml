@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<link href="~/Content/jquery-ui.css" rel="stylesheet" />
+<link href="~/Content/jquery-ui.theme.css" rel="stylesheet" />
+<script src="~/Scripts/jquery-ui.js"></script>
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        <input type="text" class="form-control" id="textAutoComplete" />
+        <br />
+        <a href="#" class="btn btn-success" onclick="SendEmail()">Enviar Correo</a>
+
+    </div>
+    
+</div>
+
+<script>
+
+    var SendEmail = function () {
+
+        $.ajax({
+            type: "POST",
+            url: "/NSendEmail/SendEmailToUser",
+            success: function (response) {
+                if (response) {
+                    alert("Exito");
+                } else {
+                    alert("Error");
+                }
+            }
+        })
+
+    }
+
+</script>

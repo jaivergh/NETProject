@@ -1,0 +1,71 @@
+﻿@model SecondWebApp.Models.EmployeeViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Busca aquí" })
+        <img src="~/Content/Images/loading.gif" style="display:none" height="30" width="30" id="loader" />
+        
+        <table class="table table-striped">
+            <tr>
+                <th>Nombre</th>
+                <th>Departamento</th>
+                <th>Dirección</th>
+                <th>Acción</th>
+            </tr>
+            <tbody id="EmployeeTable">
+
+                @if (ViewBag.ListEmployees != null)
+                {
+                    foreach (var employee in ViewBag.ListEmployees)
+                    {
+                        <tr>
+                            <td>@employee.Name</td>
+                            <td>@employee.DepartmentName</td>
+                            <td>@employee.Address</td>
+                            <td><a href=""><i class="glyphicon glyphicon-eye-open"></i>Ver</a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+
+        </table>
+
+
+    </div>
+</div>
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $("#Name").keydown(function () {
+            debugger
+            $("#loader").show()
+            var searchText = $(this).val();
+
+            $.ajax({
+                type: "POST",
+                url: "/ISearchRecord/GetSearchRecord?SearchWord=" + searchText,
+                contentType: "Html",
+                success: function (response) {
+                    $("#loader").hide()
+                    $("#EmployeeTable").html(response);
+                }
+
+            })
+
+        })
+
+    })
+</script>

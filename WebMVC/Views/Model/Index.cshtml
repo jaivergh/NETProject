@@ -1,0 +1,36 @@
+﻿@model IEnumerable<WebMVC.Models.Employee>
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<h2>Index</h2>
+
+<div class="container" style="width:60%; margin-top:2%">
+    <table class="table table-striped">
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Nombre
+            </th>
+            <th>
+                Departamento
+            </th>
+        </tr>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var empleado in Model)
+                {
+                    <tr>
+                        <td>@empleado.EmployeeID</td>
+                        <td>@empleado.Name</td>
+                        <td>@empleado.Department</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

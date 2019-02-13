@@ -1,0 +1,127 @@
+﻿@model SecondWebApp.Models.ProductViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        <div class="col-md-4">
+
+            <div class="btn btn-primary">
+                <input type="file" id="imageBroser" />
+            </div>
+            <hr />
+            <div id="imgPreview" class="thumbnail" style="display:none">
+                <img class="img-responsive" id="targetImg" />
+                <div class="caption">
+                    <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
+                    <p id="description"></p>
+                </div>
+                <a href="#" class="btn btn-default" onclick="UploadImage()">Upload</a>
+                <a href="#" class="btn btn-default" onclick="UploadImageSQL()">Upload SQL</a>
+            </div>
+        </div>
+
+        <div class="col-md-2 thumbnail" id="uploadedmage">
+
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#imageBroser").change(function () {
+            debugger
+            var File = this.files;
+
+            if (File && File[0]) {
+                ReadImage(File[0]);
+            }
+
+        })
+
+    })
+
+    var ReadImage = function (file) {
+        debugger
+        var reader = new FileReader;
+        var image = new Image;
+
+        reader.readAsDataURL(file);
+
+        reader.onload = function (_file) {
+            image.src = _file.target.result;
+
+            image.onload = function () {
+                var height = this.height;
+                var width = this.width;
+                var type = file.type;
+                var size = ~~(file.size / 1024) + "KB";
+
+                $("#targetImg").attr("src", _file.target.result);
+                $("#description").text("Tamaño: " + size + ", " + height + " x " + width + ", " + type);
+                $("#imgPreview").show();
+            }
+
+        }
+    }
+
+    var ClearPreview = function () {
+        $("#imageBroser").val("");
+        $("#description").text("");
+        $("#imgPreview").hide();
+    }
+
+    var UploadImage = function () {
+        var file = $("#imageBroser").get(0).files;
+
+        var data = new FormData;
+        data.append("ImageFile", file[0]);
+        data.append("ProductName", "Whatever");
+
+        $.ajax({
+            type: "POST",
+            url: "/FUploadImage/ImageUpload",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                ClearPreview();
+                $("#uploadedmage").append('<img src="/UploadedImages/' + response + '" class="img-resposive thumbnail"/>');
+            }
+        })
+    }
+
+
+    var UploadImageSQL = function () {
+        var file = $("#imageBroser").get(0).files;
+
+        var data = new FormData;
+        data.append("ImageFile", file[0]);
+        data.append("ProductName", "Whatever");
+
+        $.ajax({
+            type: "POST",
+            url: "/FUploadImage/ImageUploadSQL",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (imageID) {
+                ClearPreview();
+                $("#uploadedmage").append('<img src="/FUploadImage/ImageRetrieve?imageID=' + imageID + '" class="img-resposive thumbnail"/>');
+                //$("#uploadedmage").append('<img src="/UploadedImages/' + response + '" class="img-resposive thumbnail"/>');
+            }
+        })
+    }
+    
+
+</script>

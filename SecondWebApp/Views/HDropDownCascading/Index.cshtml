@@ -1,0 +1,54 @@
+﻿@model SecondWebApp.Models.CountryAndStateViewModel
+
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        @if(ViewBag.CountryList != null)
+        {
+            @Html.DropDownListFor(m=>m.CountryId, ViewBag.CountryList as SelectList, "--Seleccione País--", new { @class="form-control"})
+        }
+
+        @Html.DropDownListFor(m=>m.StateId, new SelectList(""), "--Seleccione Estado--", new { @class="form-control"})
+
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#CountryId").change(function () {
+            debugger
+            var countryId = $(this).val();
+            if (!countryId) {
+
+                $("#StateId").empty();
+                $("#StateId").append('<option value="">--Seleccione Estado--</option>');
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/HDropDownCascading/GetStatesList?countryID=" + countryId,
+                contentType:"Html",
+                success: function (response) {
+                    $("#StateId").empty();
+                    $("#StateId").append(response);
+                }
+            })
+
+        })
+
+    })
+</script>

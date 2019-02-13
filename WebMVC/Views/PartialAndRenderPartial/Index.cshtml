@@ -1,0 +1,26 @@
+﻿@model WebMVC.Models.EmployeeViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+
+<script src="~/Scripts/jquery-3.3.1.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.js"></script>
+
+<div class="container" style="width:60%; margin-top:2%">
+    <h3>Diferences between Html.Partial and Html.RenderPartial</h3>
+    @Html.Partial("Partial1")  @*Retorna un string html y puede ser almacenado en una variable*@  
+
+    @{ 
+        string stringHtml = Html.Partial("Partial1").ToHtmlString();
+    }
+
+    @stringHtml
+
+    @{ 
+        Html.RenderPartial("Partial1");   //Retorna void, escribe el resultado directamente en el http respose, es más rápido
+    }
+
+</div>

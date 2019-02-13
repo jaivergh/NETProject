@@ -1,0 +1,38 @@
+﻿@model IEnumerable<WebMVC.Models.EmployeeViewModel>
+@{
+    ViewBag.Title = "EmployessList";
+}
+
+<h2>EmployessList</h2>
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<div class="container" style="width:60%;margin-top:2%">
+
+    @if (Model != null && Model.Count() > 0)
+    {
+        <table class="table table-striped">
+            <tr>
+                <th>Identificacion</th>
+                <th>Nombre</th>
+                <th>Link</th>
+            </tr>
+
+            <tbody>
+
+                @foreach (var employee in Model)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-primary" href="~/DataBase/EmployeeDetails?employeeId=@employee.EmployeeID">@employee.EmployeeID</a>
+                        </td>
+                        <td>@employee.Name</td>
+                        <td>@Html.ActionLink(employee.EmployeeID.ToString(), "EmployeeDetails", new { employeeId = employee.EmployeeID }, new { @class = "btn btn-primary" })</td>
+</tr>
+                }
+            </tbody>
+
+        </table>
+    }
+
+</div>

@@ -1,0 +1,52 @@
+﻿@model IEnumerable<WebMVC.Models.Employee>
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<h2>Index</h2>
+
+<div class="container" style="width:60%; margin-top:2%">
+    <table class="table table-striped">
+        <tr>
+            <th>
+                ID
+            </th>
+            <th>
+                Nombre
+            </th>
+            <th>
+                Departamento
+            </th>
+        </tr>
+        <tbody>
+            @if (ViewData["ListaEmpleados"] != null)
+            {
+                foreach (var empleado in (List<WebMVC.Models.Employee>)ViewData["ListaEmpleados"])
+                {
+                    <tr>
+                        <td>@empleado.EmployeeID</td>
+                        <td>@empleado.Name</td>
+                        <td>@empleado.Department</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    <ul class="list-group">
+        <li class="list-group-item">
+            El valor en ViewBag es <p>@ViewBag.EmpleadoNombre</p>
+        </li>
+        <li class="list-group-item">
+            El valor de ViewData es <p>@ViewData["EmpleadoNombreVD"]</p>
+        </li>
+        <li class="list-group-item">
+            El valor de TempData es <p>@TempData["EmpleadoNombreTD"]</p>
+        </li>
+        <li class="list-group-item">
+            <a href="~/Data/SecondPage">Ir a la segunda pagina</a>
+        </li>
+    </ul>
+
+</div>

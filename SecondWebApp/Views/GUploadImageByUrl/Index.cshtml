@@ -1,0 +1,116 @@
+﻿
+@model SecondWebApp.Models.ProductViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="panel panel-body" style="min-height:256px">
+    <div class="col-md-3">
+
+        @{
+            Html.RenderAction("SideMenu", "EDynamicMenu");
+        }
+
+    </div>
+    <div class="col-md-9">
+        <div class="col-md-4">
+
+            <div class="btn btn-primary">
+                <input type="text" class="form-control" id="urlHolder" />
+            </div>
+            <hr />
+            <div id="imgPreview" class="thumbnail" style="display:none">
+                <img class="img-responsive" id="targetImg" />
+                <div class="caption">
+                    <a href="#" onclick="ClearPreview()"><i class="glyphicon glyphicon-trash"></i></a>
+                    <p id="description"></p>
+                </div>
+            </div>
+
+            <a href="#" class="btn btn-primary btn-block" onclick="UploadImageUrl()">Guardar Imagen por Url</a>
+        </div>
+
+        <div class="col-md-2 thumbnail" id="uploadedmage">
+
+            <img src="~/Content/Images/loading.gif" height="20" width="20" style="display:none" id="loader" />
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#imageBroser").change(function () {
+            debugger
+            var File = this.files;
+
+            if (File && File[0]) {
+                ReadImage(File[0]);
+            }
+
+        })
+
+    })
+
+    var ReadImage = function (file) {
+        debugger
+        var reader = new FileReader;
+        var image = new Image;
+
+        reader.readAsDataURL(file);
+
+        reader.onload = function (_file) {
+            image.src = _file.target.result;
+
+            image.onload = function () {
+                var height = this.height;
+                var width = this.width;
+                var type = file.type;
+                var size = ~~(file.size / 1024) + "KB";
+
+                $("#targetImg").attr("src", _file.target.result);
+                $("#description").text("Tamaño: " + size + ", " + height + " x " + width + ", " + type);
+                $("#imgPreview").show();
+            }
+
+        }
+    }
+
+    var ClearPreview = function () {
+        $("#imageBroser").val("");
+        $("#description").text("");
+        $("#imgPreview").hide();
+    }
+
+    var UploadImageUrl = function () {
+        debugger
+        $("#loader").show();
+        var url = $("#urlHolder").val();
+
+        var data = new FormData;
+        data.append("ImageUrl", url);
+
+
+        $.ajax({
+            type: "POST",
+            url: "/GUploadImageByUrl/ImageUploadUrl",
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function (imageID) {
+                ClearPreview();
+                $("#loader").hide();
+                $("#uploadedmage").append('<img src="/FUploadImage/ImageRetrieve?imageID=' + imageID + '" class="img-resposive thumbnail"/>');
+                //$("#uploadedmage").append('<img src="/UploadedImages/' + response + '" class="img-resposive thumbnail"/>');
+            }
+        })
+
+    }
+
+
+
+
+
+
+</script>
